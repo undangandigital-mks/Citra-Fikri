@@ -357,7 +357,7 @@
     </button>
 </div>
 
-<div id="global-star-container"></div>
+<div id="leaf-container"></div>
 
 <div class="snap-container" id="mainSnap">
     
@@ -604,62 +604,50 @@
 </div>
 
 <script>
-
-
     const audio = document.getElementById("bgMusic");
     const musicControl = document.getElementById("musicControl");
-        const snapContainer = document.getElementById("mainSnap");
+    const snapContainer = document.getElementById("mainSnap");
+    
+    // Pindahkan pengambilan leafContainer ke sini agar lebih aman
     const leafContainer = document.getElementById("leaf-container");
 
-    // Fungsi membuat daun
     function createLeaf() {
+        if(!leafContainer) return; // Cegah error jika elemen tidak ada
+        
         const leaf = document.createElement("div");
         leaf.className = "leaf";
-        
-        // Ukuran random antara 8px - 20px
         const size = Math.random() * 12 + 8;
         leaf.style.width = size + "px";
         leaf.style.height = (size * 1.5) + "px";
-        
-        // Posisi horizontal random
         leaf.style.left = Math.random() * 100 + "vw";
-        
-        // Durasi jatuh random 5s - 10s
         const duration = Math.random() * 5 + 5;
         leaf.style.animationDuration = duration + "s";
-        
-        // Delay random agar tidak jatuh bersamaan
-        leaf.style.animationDelay = Math.random() * 5 + "s";
+        leaf.style.animationDelay = Math.random() * 2 + "s";
 
         leafContainer.appendChild(leaf);
-
-        // Hapus elemen setelah animasi selesai agar tidak menumpuk
-        setTimeout(() => { leaf.remove(); }, (duration + 5) * 1000);
+        setTimeout(() => { leaf.remove(); }, (duration + 2) * 1000);
     }
    
     window.onload = function() {
         document.querySelectorAll('#hero .reveal').forEach(el => el.classList.add('active'));
     };
 
+    // GABUNGKAN SEMUA PERINTAH DALAM SATU CLICK EVENT
     document.getElementById('btnBuka').addEventListener('click', function() {
+        // 1. Unlock Scroll
         document.body.classList.remove('locked');
-        leafContainer.style.display = "block";
         
-        // Mulai membuat daun secara berkala
-        setInterval(createLeaf, 300); 
+        // 2. Jalankan Animasi Daun
+        if(leafContainer) {
+            leafContainer.style.display = "block";
+            setInterval(createLeaf, 400); 
+        }
 
-        audio.play();
-        document.getElementById('musicControl').classList.remove('hidden');
-        document.getElementById('intro').scrollIntoView({ behavior: 'smooth' });
-    });
+        // 3. Jalankan Musik
+        audio.play().catch(e => console.log("Autoplay dicegah browser"));
+        musicControl.classList.remove('hidden');
 
-    document.getElementById('btnBuka').addEventListener('click', function() {
-        document.body.classList.remove('locked');
-        audio.play().then(() => {
-            musicControl.classList.remove('hidden');
-        }).catch(() => {
-            musicControl.classList.remove('hidden');
-        });
+        // 4. Scroll ke Intro
         document.getElementById('intro').scrollIntoView({ behavior: 'smooth' });
     });
 
@@ -674,28 +662,20 @@
         }
     }
 
-    /* --- LOGIKA ANIMASI KONSISTEN (SCROLL UP & DOWN) --- */
-    const options = { 
-        threshold: 0.25,
-        root: snapContainer
-    };
-
     const revealObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add("active");
             } else {
-                // Menghapus kelas 'active' agar animasi berulang saat di-scroll balik
                 entry.target.classList.remove("active");
             }
         });
-    }, options);
+    }, { threshold: 0.1, root: snapContainer });
 
     document.querySelectorAll(".reveal").forEach(el => {
         revealObserver.observe(el);
     });
 
- 
 </script>
 </body>
 </html>
