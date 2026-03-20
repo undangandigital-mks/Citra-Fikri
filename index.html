@@ -52,6 +52,7 @@
         }
 
     /* Pengaturan Umum untuk semua Section & Footer */
+/* Pengaturan Umum untuk semua Section & Footer */
 section, footer {
     scroll-snap-align: start;
     scroll-snap-stop: always;
@@ -61,27 +62,30 @@ section, footer {
     flex-direction: column;
     justify-content: center;
     position: relative;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-   }
+    
+    /* PERBAIKAN DI SINI: */
+    background-size: cover !important;
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
+    background-attachment: scroll !important; /* WAJIB: scroll agar tidak zoom di HP */
+}
 
-        @media (min-width: 1024px) {
+/* KHUSUS LAPTOP/KOMPUTER (Efek Fixed hanya boleh di sini) */
+@media (min-width: 1024px) {
     section, footer {
-        background-attachment: fixed;
+        background-attachment: fixed !important;
     }
 }
 
-/* KHUSUS HALAMAN 1 (HERO) - Tetap Gelap */
+/* Background Gelap untuk Halaman 1 */
 #hero {
-    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.7)), var(--bg-image);
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)), var(--bg-image) !important;
 }
 
-/* HALAMAN 2 DAN SETERUSNYA - Putih Transparan agar Teks Hitam Jelas */
+/* Background Putih Transparan untuk Halaman 2 dan seterusnya */
 section:not(#hero), footer {
-    background: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.85)), var(--bg-image);
+    background-image: linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.9)), var(--bg-image) !important;
 }
-
         /* --- PERUBAHAN WARNA TEKS HALAMAN 2 DAN SETERUSNYA --- */
     section:not(#hero), footer {
         color: #000000 !important; /* Paksa teks jadi Hitam */
@@ -215,10 +219,10 @@ section:not(#hero) h4 {
         }
 
         .card {
-    background: rgba(255, 255, 255, 0.9); /* Putih bersih */
+    background: rgba(255, 255, 255, 0.95); /* Putih bersih */
     border: 1px solid var(--gold);
     position: relative;
-   box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+   box-shadow: 0 10px 25px rgba(0,0,0,0.1);
     max-width: 100%;
     backdrop-filter: blur(10px);
     color: #000000; /* Teks Hitam */
