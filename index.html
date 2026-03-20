@@ -63,7 +63,13 @@ section, footer {
     position: relative;
     background-size: cover;
     background-position: center;
-    background-attachment: fixed;
+    background-repeat: no-repeat;
+   }
+
+        @media (min-width: 1024px) {
+    section, footer {
+        background-attachment: fixed;
+    }
 }
 
 /* KHUSUS HALAMAN 1 (HERO) - Tetap Gelap */
@@ -95,6 +101,21 @@ section:not(#hero), footer {
     section:not(#hero) .font-bold.text-white {
         color: #000000 !important;
     }
+
+        /* Tambahkan ini di bagian bawah <style> */
+section:not(#hero) p, 
+section:not(#hero) span, 
+section:not(#hero) div,
+section:not(#hero) li {
+    color: #000000 !important; /* Paksa semua teks jadi hitam di halaman 2 ke bawah */
+}
+
+/* Tapi biarkan nama mempelai tetap berwarna Emas agar cantik */
+section:not(#hero) .font-accent, 
+section:not(#hero) h3, 
+section:not(#hero) h4 {
+    color: var(--gold) !important;
+}
         
         .font-serif { font-family: 'Playfair Display', serif; }
         .font-accent { font-family: 'Cinzel Decorative', serif; }
@@ -425,9 +446,9 @@ section:not(#hero), footer {
                 </div>
                 <p class="text-[9px] text-[#fff] font-bold italic mb-3 tracking-[0.3em]">RIA</p>
                 <div class="text-[11px] text-gray-300">
-                    <p>Anak kedua dari</p>
-                    <p class="font-bold text-white text-[13px] mt-1">Bapak Samsu Alang & Ibu Kamariah</p>
-                </div>
+    <p>Anak kedua dari</p>
+    <p class="font-bold text-white text-[13px] mt-1">Bapak Samsu Alang & Ibu Kamariah</p>
+</div>
             </div>
             
             <!-- Ampersand (Tengah) -->
@@ -440,11 +461,11 @@ section:not(#hero), footer {
                     <h3 class="font-accent text-[22px] font-bold text-[#d4af37]">Jamaluddin</h3> 
                 </div>                
                 <p class="text-[9px] text-[#fff] font-bold italic mb-1 tracking-[0.3em]">JAMAL</p>
-                <div class="text-[11px] text-gray-300">
-                    <p>Anak kedelapan dari</p>
-                    <p class="font-bold text-white text-[13px] mt-1">Bapak Palla & Ibu Saodahi</p>
-                </div>
-            </div>
+              <div class="text-[11px] text-gray-300">
+    <p>Anak kedelapan dari</p>
+    <p class="font-bold text-white text-[13px] mt-1">Bapak Palla & Ibu Saodahi</p>
+</div>
+                            </div>
         </div>
     </section>
 
