@@ -36,23 +36,27 @@
             scroll-behavior: smooth;
         }
 
-        .snap-container {
-            height: 100dvh;
-            width: 100%;
-            overflow-y: scroll;
-            overflow-x: hidden;
-            scroll-snap-type: y mandatory;
-            scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch;
-        }
+    .snap-container {
+    height: 100dvh;
+    width: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    /* Background Default (Terang) */
+    background-image: linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.9)), var(--bg-image);
+    background-size: cover;
+    background-position: center;
+    background-attachment: scroll; /* Di mobile lebih stabil menggunakan scroll */
+}
 
         body.locked .snap-container {
             overflow: hidden;
             touch-action: none;
         }
 
-    /* Pengaturan Umum untuk semua Section & Footer */
-/* Pengaturan Umum untuk semua Section & Footer */
+  /* Pengaturan Umum untuk semua Section & Footer */
 section, footer {
     scroll-snap-align: start;
     scroll-snap-stop: always;
@@ -62,34 +66,26 @@ section, footer {
     flex-direction: column;
     justify-content: center;
     position: relative;
-    
-    /* PERBAIKAN DI SINI: */
-    background-size: cover !important;
-    background-position: center center !important;
-    background-repeat: no-repeat !important;
-    background-attachment: scroll !important; /* WAJIB: scroll agar tidak zoom di HP */
+    /* PENTING: Semua section transparan agar background .snap-container terlihat */
+    background: transparent !important; 
+    color: #000000 !important; /* Standar teks hitam untuk halaman terang */
 }
 
-/* KHUSUS LAPTOP/KOMPUTER (Efek Fixed hanya boleh di sini) */
+/* KHUSUS HALAMAN 1 (HERO): Timpa agar gelap */
+#hero {
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8)), var(--bg-image) !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-attachment: scroll !important;
+    color: #ffffff !important; /* Teks putih khusus di Hero */
+}
+
+/* KHUSUS LAPTOP: Efek fixed hanya untuk layar besar */
 @media (min-width: 1024px) {
-    section, footer {
+    .snap-container {
         background-attachment: fixed !important;
     }
 }
-
-/* Background Gelap untuk Halaman 1 */
-#hero {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)), var(--bg-image) !important;
-}
-
-/* Background Putih Transparan untuk Halaman 2 dan seterusnya */
-section:not(#hero), footer {
-    background-image: linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.9)), var(--bg-image) !important;
-}
-        /* --- PERUBAHAN WARNA TEKS HALAMAN 2 DAN SETERUSNYA --- */
-    section:not(#hero), footer {
-        color: #000000 !important; /* Paksa teks jadi Hitam */
-    }
 
     /* Memastikan teks abu-abu juga berubah menjadi hitam/gelap agar terbaca */
     section:not(#hero) p.text-gray-100, 
