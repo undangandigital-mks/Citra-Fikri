@@ -89,6 +89,41 @@
         
         .font-serif { font-family: 'Playfair Display', serif; }
         .font-accent { font-family: 'Cinzel Decorative', serif; }
+
+/* --- ANIMASI DAUN JATUH --- */
+        #leaf-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+            overflow: hidden;
+            display: none; /* Muncul setelah buka undangan */
+        }
+
+        .leaf {
+            position: absolute;
+            background-color: rgba(212, 175, 55, 0.3); /* Warna emas transparan */
+            border-radius: 2px 50% 2px 50%;
+            opacity: 0.6;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-10vh) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% {
+                transform: translateY(110vh) translateX(50px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
         
         .hero-section {
             background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.6)), var(--bg-image);
@@ -575,18 +610,47 @@
     const musicControl = document.getElementById("musicControl");
         const snapContainer = document.getElementById("mainSnap");
 
+    // Fungsi membuat daun
+    function createLeaf() {
+        const leaf = document.createElement("div");
+        leaf.className = "leaf";
+        
+        // Ukuran random antara 8px - 20px
+        const size = Math.random() * 12 + 8;
+        leaf.style.width = size + "px";
+        leaf.style.height = (size * 1.5) + "px";
+        
+        // Posisi horizontal random
+        leaf.style.left = Math.random() * 100 + "vw";
+        
+        // Durasi jatuh random 5s - 10s
+        const duration = Math.random() * 5 + 5;
+        leaf.style.animationDuration = duration + "s";
+        
+        // Delay random agar tidak jatuh bersamaan
+        leaf.style.animationDelay = Math.random() * 5 + "s";
+
+        leafContainer.appendChild(leaf);
+
+        // Hapus elemen setelah animasi selesai agar tidak menumpuk
+        setTimeout(() => { leaf.remove(); }, (duration + 5) * 1000);
+    }
    
     window.onload = function() {
-        
-        // Pemicu awal untuk hero
-        const heroReveals = document.querySelectorAll('#hero .reveal');
-        heroReveals.forEach(el => el.classList.add('active'));
-        
-        if (audio) {
-            audio.preload = "auto";
-            audio.load(); 
-        }
+        document.querySelectorAll('#hero .reveal').forEach(el => el.classList.add('active'));
     };
+
+    document.getElementById('btnBuka').addEventListener('click', function() {
+        document.body.classList.remove('locked');
+        leafContainer.style.display = "block";
+        
+        // Mulai membuat daun secara berkala
+        setInterval(createLeaf, 300); 
+
+        audio.play();
+        document.getElementById('musicControl').classList.remove('hidden');
+        document.getElementById('intro').scrollIntoView({ behavior: 'smooth' });
+    });
 
     document.getElementById('btnBuka').addEventListener('click', function() {
         document.body.classList.remove('locked');
