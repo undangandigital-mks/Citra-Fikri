@@ -51,21 +51,30 @@
             touch-action: none;
         }
 
-       section, footer {
-        scroll-snap-align: start;
-        scroll-snap-stop: always;
-        min-height: 100dvh;
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        position: relative;
-        /* Opacity diturunkan dari 0.7-0.85 menjadi 0.4-0.5 agar lebih transparan */
-        background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)), var(--bg-image);
-        background-size: cover;
-        background-position: center;
-        background-attachment: fixed;
-    }
+    /* Pengaturan Umum untuk semua Section & Footer */
+section, footer {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    min-height: 100dvh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+/* KHUSUS HALAMAN 1 (HERO) - Tetap Gelap */
+#hero {
+    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.7)), var(--bg-image);
+}
+
+/* HALAMAN 2 DAN SETERUSNYA - Putih Transparan agar Teks Hitam Jelas */
+section:not(#hero), footer {
+    background: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.85)), var(--bg-image);
+}
 
         /* --- PERUBAHAN WARNA TEKS HALAMAN 2 DAN SETERUSNYA --- */
     section:not(#hero), footer {
@@ -185,15 +194,15 @@
         }
 
         .card {
-            background: rgba(0, 0, 0, 0.8);
-            border: 1px solid rgba(212, 175, 55, 0.4);
-            position: relative;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-            max-width: 100%;
-            backdrop-filter: blur(10px);
-            color: #fff;
-            border-radius: 4px;
-        }
+    background: rgba(255, 255, 255, 0.9); /* Putih bersih */
+    border: 1px solid var(--gold);
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    max-width: 100%;
+    backdrop-filter: blur(10px);
+    color: #000; /* Teks dalam kartu jadi hitam */
+    border-radius: 8px;
+}
 
 
 
@@ -616,11 +625,11 @@
         
         const leaf = document.createElement("div");
         leaf.className = "leaf";
-        const size = Math.random() * 12 + 8;
+        const size = Math.random() * 6 + 4;
         leaf.style.width = size + "px";
         leaf.style.height = (size * 1.5) + "px";
         leaf.style.left = Math.random() * 100 + "vw";
-        const duration = Math.random() * 5 + 5;
+        const duration = Math.random() * 5 + 7;
         leaf.style.animationDuration = duration + "s";
         leaf.style.animationDelay = Math.random() * 2 + "s";
 
@@ -640,7 +649,7 @@
         // 2. Jalankan Animasi Daun
         if(leafContainer) {
             leafContainer.style.display = "block";
-            setInterval(createLeaf, 400); 
+            setInterval(createLeaf, 800); 
         }
 
         // 3. Jalankan Musik
