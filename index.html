@@ -248,25 +248,7 @@
             box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
         }
 
-        .star {
-            position: absolute;
-            background: white;
-            border-radius: 50%;
-            animation: twinkle linear infinite;
-            opacity: 0;
-        }
-        @keyframes twinkle {
-            0%, 100% { opacity: 0; transform: scale(0.3); }
-            50% { opacity: 0.8; transform: scale(1.1); }
-        }
-
-        #global-star-container {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: 5;
-        }
-
+       
         .music-btn {
             background: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(8px);
@@ -591,27 +573,10 @@
 
     const audio = document.getElementById("bgMusic");
     const musicControl = document.getElementById("musicControl");
-    const globalStarContainer = document.getElementById("global-star-container");
-    const heroStarContainer = document.getElementById("hero-stars");
-    const snapContainer = document.getElementById("mainSnap");
+        const snapContainer = document.getElementById("mainSnap");
 
-    function createStar(container) {
-        const star = document.createElement("div");
-        star.className = "star";
-        const size = Math.random() * 2 + 1;
-        star.style.width = size + "px";
-        star.style.height = size + "px";
-        star.style.left = Math.random() * 100 + "%";
-        star.style.top = Math.random() * 100 + "%";
-        const duration = Math.random() * 3 + 2;
-        star.style.animationDuration = duration + "s";
-        star.style.animationDelay = Math.random() * 5 + "s";
-        container.appendChild(star);
-    }
-
+   
     window.onload = function() {
-        for(let i=0; i<30; i++) createStar(heroStarContainer);
-        for(let i=0; i<50; i++) createStar(globalStarContainer);
         
         // Pemicu awal untuk hero
         const heroReveals = document.querySelectorAll('#hero .reveal');
