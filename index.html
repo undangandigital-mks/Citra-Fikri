@@ -71,6 +71,9 @@ section, footer {
     color: #000000 !important; /* Standar teks hitam untuk halaman terang */
 }
 
+
+
+        
 /* KHUSUS HALAMAN 1 (HERO): Timpa agar gelap */
 #hero {
     background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8)), var(--bg-image) !important;
@@ -373,6 +376,18 @@ section:not(#hero) .text-\[\#d4af37\] {
     color: #d4af37 !important;
 }
 
+
+        /* Sembunyikan box hero sampai gambar siap */
+#hero .hero-glass-box {
+    opacity: 0;
+    transition: opacity 1s ease;
+}
+
+/* Class untuk menampilkan kembali */
+#hero .hero-glass-box.ready {
+    opacity: 1;
+}
+
     </style>
 </head>
 <body class="antialiased locked">
@@ -631,13 +646,10 @@ section:not(#hero) .text-\[\#d4af37\] {
     const audio = document.getElementById("bgMusic");
     const musicControl = document.getElementById("musicControl");
     const snapContainer = document.getElementById("mainSnap");
-    
-    // Pindahkan pengambilan leafContainer ke sini agar lebih aman
     const leafContainer = document.getElementById("leaf-container");
 
     function createLeaf() {
-        if(!leafContainer) return; // Cegah error jika elemen tidak ada
-        
+        if(!leafContainer) return;
         const leaf = document.createElement("div");
         leaf.className = "leaf";
         const size = Math.random() * 6 + 4;
@@ -651,27 +663,44 @@ section:not(#hero) .text-\[\#d4af37\] {
         leafContainer.appendChild(leaf);
         setTimeout(() => { leaf.remove(); }, (duration + 2) * 1000);
     }
-   
+
+    // --- LOGIKA DETEKSI GAMBAR (HANYA BOLEH SATU WINDOW.ONLOAD) ---
     window.onload = function() {
-        document.querySelectorAll('#hero .reveal').forEach(el => el.classList.add('active'));
+        // 1. Ambil URL background
+        const bgUrl = getComputedStyle(document.documentElement)
+                      .getPropertyValue('--bg-image')
+                      .replace(/url\(['"]?(.*?)['"]?\)/i, '$1');
+
+        const img = new Image();
+        img.src = bgUrl;
+
+        const startAnimation = () => {
+            setTimeout(() => {
+                const heroBox = document.querySelector('#hero .hero-glass-box');
+                if(heroBox) heroBox.classList.add('ready'); 
+                
+                document.querySelectorAll('#hero .reveal').forEach(el => {
+                    el.classList.add('active');
+                });
+            }, 500); 
+        };
+
+        img.onload = startAnimation;
+        img.onerror = startAnimation; // Tetap jalan jika gambar error
     };
 
-    // GABUNGKAN SEMUA PERINTAH DALAM SATU CLICK EVENT
+    // --- EVENT CLICK BUKA UNDANGAN ---
     document.getElementById('btnBuka').addEventListener('click', function() {
-        // 1. Unlock Scroll
         document.body.classList.remove('locked');
         
-        // 2. Jalankan Animasi Daun
         if(leafContainer) {
             leafContainer.style.display = "block";
             setInterval(createLeaf, 800); 
         }
 
-        // 3. Jalankan Musik
         audio.play().catch(e => console.log("Autoplay dicegah browser"));
         musicControl.classList.remove('hidden');
 
-        // 4. Scroll ke Intro
         document.getElementById('intro').scrollIntoView({ behavior: 'smooth' });
     });
 
@@ -686,6 +715,7 @@ section:not(#hero) .text-\[\#d4af37\] {
         }
     }
 
+    // --- INTERSECTION OBSERVER ---
     const revealObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -699,7 +729,8 @@ section:not(#hero) .text-\[\#d4af37\] {
     document.querySelectorAll(".reveal").forEach(el => {
         revealObserver.observe(el);
     });
-
 </script>
+
+    
 </body>
 </html>
