@@ -69,10 +69,9 @@ section, footer {
     /* PENTING: Semua section transparan agar background .snap-container terlihat */
     background: transparent !important; 
     color: #000000 !important; /* Standar teks hitam untuk halaman terang */
+overflow: hidden; /* Tambahkan ini */
+    z-index: 1; /* Tambahkan ini */  
 }
-
-
-
         
 /* KHUSUS HALAMAN 1 (HERO): Timpa agar gelap */
 #hero {
@@ -81,6 +80,7 @@ section, footer {
     background-position: center !important;
     background-attachment: scroll !important;
     color: #ffffff !important; /* Teks putih khusus di Hero */
+    z-index: 5; /* Pastikan hero selalu di atas saat awal */
 }
 
 /* KHUSUS LAPTOP: Efek fixed hanya untuk layar besar */
@@ -233,20 +233,20 @@ section:not(#hero) h4 {
           /* --- ANIMATION CORE (LEBIH LAMBAT & HALUS) --- */
 .reveal {
     opacity: 0;
-    /* Durasi ditingkatkan ke 3.5s untuk kesan elegan */
-    transition: all 3.5s cubic-bezier(0.22, 1, 0.36, 1); 
-    will-change: transform, opacity;
+    /* Transisi hanya aktif saat elemen memiliki class .active */
+    transition: none
 }
 
-.reveal-up { transform: translateY(100px); } /* Jarak gerak lebih jauh agar lebih terasa */
-.reveal-down { transform: translateY(-100px); }
-.reveal-zoom { transform: scale(0.8); }
-.reveal-left { transform: translateX(-100px); }
-.reveal-right { transform: translateX(100px); }
+.reveal-up { transform: translateY(80px); } /* Jarak gerak lebih jauh agar lebih terasa */
+.reveal-down { transform: translateY(-80px); }
+.reveal-zoom { transform: scale(0.9); }
+.reveal-left { transform: translateX(-80px); }
+.reveal-right { transform: translateX(80px); }
 
 .reveal.active { 
     opacity: 1; 
     transform: translate(0, 0) scale(1); 
+    transition: all 3.0s cubic-bezier(0.22, 1, 0.36, 1); /* Durasi lebih masuk akal */
 }
 
         .reveal:not(.active) {
@@ -724,7 +724,7 @@ section:not(#hero) .text-\[\#d4af37\] {
                 entry.target.classList.remove("active");
             }
         });
-    }, { threshold: 0.25, root: snapContainer });
+    }, { threshold: 0.15, root: snapContainer });
 
     document.querySelectorAll(".reveal").forEach(el => {
         revealObserver.observe(el);
